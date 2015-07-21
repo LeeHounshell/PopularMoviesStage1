@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="9dp"
+    android:background="@color/blue"
+    android:orientation="vertical"
+    android:padding="9dp"
+    tools:context="com.smartvariables.lee.popularmovies.MovieDetailsActivityFragment">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="3dp"
+        android:columnCount="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingTop="3dp">
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </GridLayout>
+
+    <GridLayout
+        android:id="@+id/center_rating_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:columnCount="2"
+        android:gravity="top"
+        android:orientation="horizontal"
+        android:paddingBottom="0dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp">
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:layout_gravity="top|left"
+            android:fillViewport="true"
+            android:gravity="top|left"
+            android:numStars="5"
+            android:progressBackgroundTint="@android:color/transparent"
+            android:textColor="@android:color/holo_red_light" />
+
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_columnWeight="1"
+            android:layout_gravity="top|right"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="top|right"
+            android:lines="1"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="13sp"
+            android:textStyle="normal" />
+
+    </GridLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:id="@+id/poster_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent">
+
+            <TextView
+                android:id="@+id/plot_synopsis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_margin="3dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="left"
+                android:padding="3dp"
+                android:textSize="13sp"
+                android:textStyle="normal" />
+
+            <ImageView
+                android:id="@+id/poster_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/plot_synopsis"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:background="@drawable/rounded_corners"
+                android:gravity="center"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/missing_art"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/plot_synopsis"
+                android:layout_gravity="center"
+                android:layout_margin="3dp"
+                android:ellipsize="end"
+                android:fadingEdge="horizontal"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:lines="7"
+                android:padding="3dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</LinearLayout>
