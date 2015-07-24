@@ -2,6 +2,7 @@
     <string name="app_name">Popular Movies, Stage 1</string>
     <string name="attribute_tmdb">This product uses the TMDb API but is not endorsed or certified by TMDb. - see www.themoviedb.org</string>
     <string name="attribute_themoviedbapi">This product uses the \'themoviedbapi\' library from: https://github.com/holgerbrandl/themoviedbapi/ </string>
+    <string name="loading">Loading Movies..</string>
     <string name="title_activity_movie_details">Movie Details</string>
     <string name="sort_by">Sort By:</string>
     <string name="pref_popular">Most Popular</string>
@@ -17,6 +18,5 @@
     <string name="airplane">Airplane Mode</string>
     <string name="ok">Ok</string>
     <string name="action_share">Share</string>
-    <string name="action_save">Save Poster</string>
     <string name="check_out">Check out this movie from</string>
 </resources>

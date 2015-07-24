@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,9 +27,10 @@ public class MainActivityFragment
         implements AdapterView.OnItemClickListener,
         MovieContext {
     private static String TAG = "LEE: <" + MainActivityFragment.class.getSimpleName() + ">";
+    private static String MOVIE_LIST_KEY = "movieList";
     private static MainActivityFragment mainActivityFragment;
     private static MovieAdapter movieAdapter;
-    private ArrayList<MovieDbInfo> recoveryList;
+    private MovieDbInfoList recoveryList;
     private GridView gridView;
 
     public MainActivityFragment() {
@@ -39,7 +41,7 @@ public class MainActivityFragment
         return mainActivityFragment;
     }
 
-    public static ArrayList<MovieDbInfo> getMovieList() {
+    public static MovieDbInfoList getMovieList() {
         if (movieAdapter == null) {
             return null;
         }
@@ -52,13 +54,15 @@ public class MainActivityFragment
         Log.v(TAG, "onCreate");
         mainActivityFragment = this;
         setHasOptionsMenu(true);
-        recoveryList = new ArrayList<MovieDbInfo>();
-        if (savedInstanceState != null && savedInstanceState.containsKey("movieList")) {
-            recoveryList = savedInstanceState.getParcelableArrayList("movieList");
-            Log.v(TAG, "recover using instance state - recoveryList=" + recoveryList);
+        recoveryList = new MovieDbInfoList();
+        if (savedInstanceState != null && savedInstanceState.containsKey(MOVIE_LIST_KEY)) {
+            ArrayList<MovieDbInfo> savedMovieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST_KEY);
+            Log.v(TAG, "recover using savedMovieList=" + savedMovieList);
+            recoveryList = (MovieDbInfoList) savedMovieList;
         } else {
-            Log.v(TAG, "no 'movieList' to recover!");
+            Log.v(TAG, "no 'movieList' in savedInstanceState");
         }
+        Log.v(TAG, "onCreate: recoveryList=" + recoveryList);
     }
 
     @Override
@@ -67,6 +71,8 @@ public class MainActivityFragment
             ViewGroup container,
             Bundle savedInstanceState) {
         Log.v(TAG, "onCreateView");
+        String loading = getResources().getString(R.string.loading);
+        Toast.makeText(getActivity(), loading, Toast.LENGTH_SHORT).show();
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         gridView = (GridView) view.findViewById(R.id.poster_gridview);
         if (gridView != null) {
@@ -99,8 +105,8 @@ public class MainActivityFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        ArrayList<MovieDbInfo> theMovieList = getMovieList();
-        outState.putParcelableArrayList("movieList", theMovieList);
+        MovieDbInfoList theMovieList = getMovieList();
+        outState.putParcelableArrayList(MOVIE_LIST_KEY, theMovieList);
         super.onSaveInstanceState(outState);
         Log.v(TAG, "--> onSaveInstanceState");
     }
@@ -163,7 +169,7 @@ public class MainActivityFragment
             int position,
             long id) {
         Log.v(TAG, "onItemClick - position=" + position);
-        if (MainActivity.isConnected() /*|| (movieAdapter.getCount() > position)*/ ) {
+        if (MainActivity.isConnected() /*|| (movieAdapter.getCount() > position)*/) {
             if (position >= getMovieList().size()) {
                 Log.e(TAG, "no movie for index position=" + position + ", getMovieList.size()=" + getMovieList().size());
                 return;
@@ -202,30 +208,42 @@ public class MainActivityFragment
         SharedPreferences.Editor editor = sharedPrefs.edit();
         int id = item.getItemId();
 
-        if (id == R.id.pref_popular) {
-            String popularityDesc = getResources().getString(R.string.pref_popular);
-            String byPopularity = getResources().getString(R.string.sort_popular);
-            editor.putString("sortDesc", popularityDesc);
-            editor.putString("sortBy", byPopularity);
-            editor.commit();
-            loadMovies(popularityDesc, byPopularity);
-            return true;
-        } else if (id == R.id.pref_rated) {
-            String ratedDesc = getResources().getString(R.string.pref_rated);
-            String byRated = getResources().getString(R.string.sort_rated);
-            editor.putString("sortDesc", ratedDesc);
-            editor.putString("sortBy", byRated);
-            editor.commit();
-            loadMovies(ratedDesc, byRated);
-            return true;
-        } else if (id == R.id.pref_release) {
-            String releaseDesc = getResources().getString(R.string.pref_release);
-            String byRelease = getResources().getString(R.string.sort_release);
-            editor.putString("sortDesc", releaseDesc);
-            editor.putString("sortBy", byRelease);
-            editor.commit();
-            loadMovies(releaseDesc, byRelease);
-            return true;
+        switch (id) {
+            case R.id.home: {
+                Log.v(TAG, "case R.id.home - UP PRESSED");
+                getActivity().onBackPressed();
+                return true;
+            }
+            case R.id.pref_popular: {
+                Log.v(TAG, "case R.id.pref_popular");
+                String popularityDesc = getResources().getString(R.string.pref_popular);
+                String byPopularity = getResources().getString(R.string.sort_popular);
+                editor.putString("sortDesc", popularityDesc);
+                editor.putString("sortBy", byPopularity);
+                editor.commit();
+                loadMovies(popularityDesc, byPopularity);
+                return true;
+            }
+            case R.id.pref_rated: {
+                Log.v(TAG, "case R.id.pref_rated");
+                String ratedDesc = getResources().getString(R.string.pref_rated);
+                String byRated = getResources().getString(R.string.sort_rated);
+                editor.putString("sortDesc", ratedDesc);
+                editor.putString("sortBy", byRated);
+                editor.commit();
+                loadMovies(ratedDesc, byRated);
+                return true;
+            }
+            case R.id.pref_release: {
+                Log.v(TAG, "case R.id.pref_release");
+                String releaseDesc = getResources().getString(R.string.pref_release);
+                String byRelease = getResources().getString(R.string.sort_release);
+                editor.putString("sortDesc", releaseDesc);
+                editor.putString("sortBy", byRelease);
+                editor.commit();
+                loadMovies(releaseDesc, byRelease);
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -236,7 +254,7 @@ public class MainActivityFragment
     }
 
     @Override
-    public ArrayList<MovieDbInfo> getDefaultMovieList() {
+    public MovieDbInfoList getDefaultMovieList() {
         return recoveryList;
     }
 

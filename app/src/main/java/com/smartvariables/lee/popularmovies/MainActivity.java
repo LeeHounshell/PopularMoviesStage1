@@ -77,9 +77,10 @@ public class MainActivity
         internetReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.v(TAG, "onReceive - intent="+intent);
                 boolean networkAvailable = MainActivity.isNetworkAvailable();
-                Log.v(TAG, "WIFI STATE CHANGED! - networkAvailable=" + networkAvailable);
                 if (networkAvailable) {
+                    Log.v(TAG, "NETWORK STATE CHANGED! - networkAvailable=" + networkAvailable);
                     MainActivityFragment activityFragment = (MainActivityFragment) MainActivityFragment.getMainActivityFragment();
                     if (activityFragment != null) {
                         Log.v(TAG, "found the MainActivityFragment - loadMovies");
@@ -140,7 +141,6 @@ public class MainActivity
         Log.v(TAG, "showNoInternetDialog");
         noInternetDialog = new AlertDialog.Builder(
                 getMainActivity());
-        noInternetDialog.setCancelable(false);
         noInternetDialog.setTitle(
                 getResources().getString(R.string.offline));
         String app_name = getResources().getString(
@@ -197,6 +197,15 @@ public class MainActivity
                         internetDialogActive = false;
                     }
                 });
+
+        noInternetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Log.v(TAG, "onBackPressed within Dialog..");
+                dialog.dismiss();
+                internetDialogActive = false;
+            }
+        });
 
         if (!isConnected()) {
             noInternetDialog.show();

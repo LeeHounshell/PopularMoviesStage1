@@ -3,7 +3,6 @@ package com.smartvariables.lee.popularmovies;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import info.movito.themoviedbapi.TmdbApi;
@@ -11,10 +10,10 @@ import info.movito.themoviedbapi.model.Discover;
 import info.movito.themoviedbapi.model.MovieDb;
 
 public class PerformAsyncMovieSearchTask
-        extends AsyncTask<String, Void, ArrayList<MovieDbInfo>> {
+        extends AsyncTask<String, Void, MovieDbInfoList> {
     private static String TAG = "LEE: <" + PerformAsyncMovieSearchTask.class.getSimpleName() + ">";
     private final MovieContext theContext;
-    private ArrayList<MovieDbInfo> movieList;
+    private MovieDbInfoList movieList;
 
     public PerformAsyncMovieSearchTask(MovieContext theContext) {
         this.theContext = theContext;
@@ -27,14 +26,14 @@ public class PerformAsyncMovieSearchTask
     }
 
     @Override
-    protected ArrayList<MovieDbInfo> doInBackground(String... params) {
+    protected MovieDbInfoList doInBackground(String... params) {
         Log.v(TAG, "doInBackground");
         assert params[0] != null : "invalid API key!";
         assert params[1] != null : "invalid sort order!";
         if (MainActivity.isConnected()) {
             TmdbApi tmdb = new TmdbApi(params[0]);
             if (tmdb != null) {
-                movieList = new ArrayList<MovieDbInfo>();
+                movieList = new MovieDbInfoList();
                 Log.v(TAG, "tmdb=" + tmdb + ", sortBy=" + params[1]);
                 Discover discover = new Discover();
                 discover.sortBy(params[1]);
@@ -60,7 +59,7 @@ public class PerformAsyncMovieSearchTask
     }
 
     @Override
-    protected void onPostExecute(ArrayList<MovieDbInfo> movieList) {
+    protected void onPostExecute(MovieDbInfoList movieList) {
         // update grid UI with movies..
         Log.v(TAG, "onPostExecute: theContext=" + theContext + ", movieList.size()=" + movieList.size());
         theContext.getMovieAdapter()

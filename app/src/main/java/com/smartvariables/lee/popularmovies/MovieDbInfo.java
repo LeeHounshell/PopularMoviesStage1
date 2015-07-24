@@ -52,6 +52,17 @@ public class MovieDbInfo implements Parcelable {
         overview = in.readString();
     }
 
+    public MovieDbInfo(String title, Float populatity, Float voteAverage, Integer voteCount, String releaseDate, String posterPath, String overview) {
+        //Log.v(TAG, "MovieDbInfo(...)");
+        this.title = title;
+        this.popularity = populatity;
+        this.voteAverage = voteAverage;
+        this.voteCount = voteCount;
+        this.releaseDate = releaseDate;
+        this.posterPath = posterPath;
+        this.overview = overview;
+    }
+
     @Override
     public int describeContents() {
         return 0;

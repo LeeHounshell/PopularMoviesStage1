@@ -163,6 +163,11 @@ public class MovieDetailsActivityFragment
         Log.v(TAG, "onOptionsItemSelected");
         int id = item.getItemId();
         switch (id) {
+            case R.id.home: {
+                Log.v(TAG, "case R.id.home - UP PRESSED");
+                getActivity().onBackPressed();
+                return true;
+            }
             case R.id.menu_item_share: {
                 Log.v(TAG, "case R.id.menu_item_share");
                 Log.v(TAG, "share it..");
@@ -172,4 +177,5 @@ public class MovieDetailsActivityFragment
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

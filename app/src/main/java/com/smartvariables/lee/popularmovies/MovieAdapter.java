@@ -15,20 +15,18 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class MovieAdapter
         extends ArrayAdapter<MovieDbInfo> {
     private final static int STATIC_TITLE_LEN_MAX = 20;
     private static String TAG = "LEE: <" + MovieAdapter.class.getSimpleName() + ">";
-    private static ArrayList<MovieDbInfo> movieList;
+    private static MovieDbInfoList movieList;
     private Context context;
     private int resource;
 
     public MovieAdapter(
             Context context,
             int resource,
-            ArrayList<MovieDbInfo> movieList) {
+            MovieDbInfoList movieList) {
         super(context, resource, movieList);
         //Log.v(TAG, "MovieAdapter");
         this.context = context;
@@ -36,11 +34,11 @@ public class MovieAdapter
         MovieAdapter.movieList = movieList;
     }
 
-    public static ArrayList<MovieDbInfo> getMovieList() {
+    public static MovieDbInfoList getMovieList() {
         return movieList;
     }
 
-    public void setMovieData(ArrayList<MovieDbInfo> movieList) {
+    public void setMovieData(MovieDbInfoList movieList) {
         Log.v(TAG, "===> setMovieData - movieList.size()=" + movieList.size() + " <===");
         MovieAdapter.movieList = movieList;
         //Log.v(TAG, "notifyDataSetChanged");
