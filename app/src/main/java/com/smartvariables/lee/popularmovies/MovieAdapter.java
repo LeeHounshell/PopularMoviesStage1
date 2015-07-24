@@ -15,41 +15,43 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import java.util.List;
-
-import info.movito.themoviedbapi.model.MovieDb;
+import java.util.ArrayList;
 
 public class MovieAdapter
-        extends ArrayAdapter<MovieDb> {
+        extends ArrayAdapter<MovieDbInfo> {
     private final static int STATIC_TITLE_LEN_MAX = 20;
     private static String TAG = "LEE: <" + MovieAdapter.class.getSimpleName() + ">";
-    private static List<MovieDb> movieList;
+    private static ArrayList<MovieDbInfo> movieList;
     private Context context;
     private int resource;
 
     public MovieAdapter(
             Context context,
             int resource,
-            List<MovieDb> movieList) {
+            ArrayList<MovieDbInfo> movieList) {
         super(context, resource, movieList);
-        Log.v(TAG, "MovieAdapter");
+        //Log.v(TAG, "MovieAdapter");
         this.context = context;
         this.resource = resource;
         MovieAdapter.movieList = movieList;
     }
 
-    public static List<MovieDb> getMovieList() {
+    public static ArrayList<MovieDbInfo> getMovieList() {
         return movieList;
     }
 
-    public void setMovieData(List<MovieDb> movieList) {
-        Log.v(TAG, "setMovieData");
-        this.movieList = movieList;
+    public void setMovieData(ArrayList<MovieDbInfo> movieList) {
+        Log.v(TAG, "===> setMovieData - movieList.size()=" + movieList.size() + " <===");
+        MovieAdapter.movieList = movieList;
+        //Log.v(TAG, "notifyDataSetChanged");
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
+        if (movieList == null) {
+            return 0;
+        }
         return movieList.size();
     }
 
@@ -92,17 +94,18 @@ public class MovieAdapter
         }
 
         if (needToCheckValidImage) {
-            Log.v(TAG, "start Thread to check if image loaded ok.. movie=" + holder.getMovie());
+            //Log.v(TAG, "start Thread to check if image loaded ok.. movie=" + holder.getMovie());
             new Handler().postDelayed(
                     new Runnable() {
                         @Override
                         public void run() {
                             MovieViewHolder.fixGuiWhenInvalidImageLoaded(holder);
+                            //Log.v(TAG, "notifyDataSetChanged");
                             notifyDataSetChanged();
                         }
                     }, holder.getDelayUntilExpectedUpdate());
         } else {
-            Log.v(TAG, "already cached movie=" + holder.getMovie());
+            //Log.v(TAG, "already cached movie=" + holder.getMovie());
         }
         return row;
     }

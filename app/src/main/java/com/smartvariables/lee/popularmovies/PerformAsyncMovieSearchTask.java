@@ -11,37 +11,42 @@ import info.movito.themoviedbapi.model.Discover;
 import info.movito.themoviedbapi.model.MovieDb;
 
 public class PerformAsyncMovieSearchTask
-        extends AsyncTask<String, Void, List<MovieDb>> {
+        extends AsyncTask<String, Void, ArrayList<MovieDbInfo>> {
     private static String TAG = "LEE: <" + PerformAsyncMovieSearchTask.class.getSimpleName() + ">";
     private final MovieContext theContext;
-    private List<MovieDb> movieList;
+    private ArrayList<MovieDbInfo> movieList;
 
     public PerformAsyncMovieSearchTask(MovieContext theContext) {
         this.theContext = theContext;
+        this.movieList = theContext.getDefaultMovieList();
     }
 
     @Override
     protected void onPreExecute() {
         Log.v(TAG, "onPreExecute");
-        movieList = new ArrayList<MovieDb>();
     }
 
     @Override
-    protected List<MovieDb> doInBackground(String... params) {
+    protected ArrayList<MovieDbInfo> doInBackground(String... params) {
         Log.v(TAG, "doInBackground");
         assert params[0] != null : "invalid API key!";
         assert params[1] != null : "invalid sort order!";
-        if (MainActivity.getMainActivity() != null && MainActivity.getMainActivity()
-                .isConnected()) {
+        if (MainActivity.isConnected()) {
             TmdbApi tmdb = new TmdbApi(params[0]);
             if (tmdb != null) {
+                movieList = new ArrayList<MovieDbInfo>();
                 Log.v(TAG, "tmdb=" + tmdb + ", sortBy=" + params[1]);
                 Discover discover = new Discover();
                 discover.sortBy(params[1]);
                 try {
-                    movieList = tmdb.getDiscover()
+                    List<MovieDb> theMovieList = tmdb.getDiscover()
                             .getDiscover(discover)
                             .getResults();
+                    for (MovieDb movie : theMovieList) {
+                        MovieDbInfo movieDbInfo = new MovieDbInfo(movie);
+                        movieList.add(movieDbInfo);
+                        Log.v(TAG, "ADD to movieList: movieDbInfo=" + movieDbInfo.getTitle());
+                    }
                 } catch (NullPointerException e) {
                     Log.e(TAG, "problem accessing tmdb. sorBy=" + params[1] + " - error=" + e);
                 }
@@ -55,10 +60,10 @@ public class PerformAsyncMovieSearchTask
     }
 
     @Override
-    protected void onPostExecute(List<MovieDb> movieList) {
+    protected void onPostExecute(ArrayList<MovieDbInfo> movieList) {
         // update grid UI with movies..
-        Log.v(TAG, "onPostExecute: theContext=" + theContext + ", movieList=" + movieList);
-        theContext.getMovieGridViewAdapter()
+        Log.v(TAG, "onPostExecute: theContext=" + theContext + ", movieList.size()=" + movieList.size());
+        theContext.getMovieAdapter()
                 .setMovieData(movieList);
     }
 

@@ -15,5 +15,8 @@
     <string name="airplane_mode">\nThe %s app\nrequires Internet connectivity.\nAirplane mode is currently on.\n\nNo Internet connection found.\n</string>
     <string name="connect">Connect</string>
     <string name="airplane">Airplane Mode</string>
-    <string name="exit">Exit</string>
+    <string name="ok">Ok</string>
+    <string name="action_share">Share</string>
+    <string name="action_save">Save Poster</string>
+    <string name="check_out">Check out this movie from</string>
 </resources>

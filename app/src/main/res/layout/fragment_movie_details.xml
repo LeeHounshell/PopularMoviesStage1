@@ -105,11 +105,13 @@
 
             <ImageView
                 android:id="@+id/poster_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:layout_below="@+id/plot_synopsis"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/rounded_corners"
                 android:gravity="center"
                 android:scaleType="centerCrop" />

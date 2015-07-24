@@ -21,14 +21,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import info.movito.themoviedbapi.model.MovieDb;
-
 // UI data holder for one movie item
 public class MovieViewHolder {
     private static String TAG = "LEE: <" + MovieViewHolder.class.getSimpleName() + ">";
     private static String TMDB_BASE_URL = "http://image.tmdb.org/t/p/";
     private Context context;
-    private MovieDb movie;
+    private MovieDbInfo movie;
     private Uri movieInfoUri;
     private RatingBar ratingBar;
     private MovieAdapter.MovieImageViewState movieImageViewState;
@@ -44,7 +42,7 @@ public class MovieViewHolder {
 
     public MovieViewHolder(
             Context context,
-            MovieDb movie,
+            MovieDbInfo movie,
             RatingBar ratingBar,
             TextView releaseDateTextView,
             ImageView posterImageView,
@@ -52,7 +50,7 @@ public class MovieViewHolder {
             TextView plotSynopsis,
             TextView missingArtTextView,
             TextForMissingImage textForMissingImage) {
-        Log.v(TAG, "MovieViewHolder - movie=" + movie);
+        //Log.v(TAG, "MovieViewHolder - movie=" + movie);
         this.setContext(context);
         this.setRatingBar(ratingBar);
         this.setReleaseDateTextView(releaseDateTextView);
@@ -65,7 +63,7 @@ public class MovieViewHolder {
     }
 
     public static boolean fixGuiWhenInvalidImageLoaded(MovieViewHolder holder) {
-        Log.v(TAG, "fixGuiWhenInvalidImageLoaded: movie=" + holder.getMovie());
+        //Log.v(TAG, "fixGuiWhenInvalidImageLoaded: movie=" + holder.getMovie());
         boolean corrupt = false;
         if (holder.getPosterImageView() == null) {
             corrupt = true;
@@ -79,15 +77,13 @@ public class MovieViewHolder {
                     corrupt = true;
                 }
             } catch (NullPointerException e) {
-                Log.w(TAG, "NO BITMAP!");
+                //Log.w(TAG, "NO BITMAP!");
                 corrupt = true;
             }
         }
         if (corrupt) {
             // we have an posterImageView but nothing usable is there..
-            Log.w(
-                    TAG,
-                    "NO IMAGE: using a random colored background + title for missing poster art");
+            //Log.w(TAG, "NO IMAGE: cover for missing poster art");
             if (holder.getTextForMissingImage() == TextForMissingImage.SHOW_TITLE) {
                 holder.getMissingArtTextView()
                         .setBackgroundColor(holder.getBackgroundColor());
@@ -124,8 +120,8 @@ public class MovieViewHolder {
         return "";
     }
 
-    public void initializeMovieViewHolderWithMovie(MovieDb movie) {
-        Log.v(TAG, "initializeMovieViewHolderWithMovie - movie=" + movie);
+    public void initializeMovieViewHolderWithMovie(MovieDbInfo movie) {
+        //Log.v(TAG, "initializeMovieViewHolderWithMovie - movie=" + movie);
         if (movie == null) {
             Log.e(TAG, "attempt to initialize MovieViewHolder with a null movie!");
             return;
@@ -143,21 +139,14 @@ public class MovieViewHolder {
                                             .getPosterPath())
                             .build());
         } else {
-            Log.w(TAG, "unable to get movie poster path!");
+            //Log.w(TAG, "unable to get movie poster path!");
             this.setMovieInfoUri(null);
             this.setMovieImageViewState(MovieAdapter.MovieImageViewState.IMAGE_FAIL);
         }
-        Log.v(
-                TAG,
-                "title=" + this.getMovie()
-                        .getTitle() + ", movieInfoUri=" + this.getMovieInfoUri());
+        //Log.v(TAG, "title=" + this.getMovie().getTitle());
         if (this.getRatingBar() != null) {
             float rating = this.getMovie()
                     .getVoteAverage() / (float) 2.0;
-            Log.v(
-                    TAG,
-                    "getView for movie=" + this.getMovie()
-                            .getTitle() + ", rating=" + rating);
             this.getRatingBar()
                     .setRating(rating);
         }
@@ -190,9 +179,8 @@ public class MovieViewHolder {
                     .setVisibility(View.GONE);
         }
         this.setDelayUntilExpectedUpdate(300);
-        if (this.getMovieInfoUri() != null && MainActivity.getMainActivity()
-                .isConnected()) {
-            Log.v(TAG, "Internet: request=" + this.getMovieInfoUri());
+        if (this.getMovieInfoUri() != null && MainActivity.isConnected()) {
+            //Log.v(TAG, "Internet: request=" + this.getMovieInfoUri());
             this.setMovieImageViewState(MovieAdapter.MovieImageViewState.LOADING);
             Picasso.with(getContext())
                     .load(this.getMovieInfoUri())
@@ -200,7 +188,7 @@ public class MovieViewHolder {
             this.setDelayUntilExpectedUpdate(9000);
         } else {
             this.setMovieImageViewState(MovieAdapter.MovieImageViewState.IMAGE_FAIL);
-            Log.v(TAG, "no Internet or bad URL");
+            //Log.v(TAG, "no Internet or bad URL");
         }
         if (this.getMovieImageViewState() == MovieAdapter.MovieImageViewState.IMAGE_FAIL) {
             // show a placeholder for the image..
@@ -213,7 +201,7 @@ public class MovieViewHolder {
     }
 
     private String getReadableDate(String releaseDate) {
-        Log.v(TAG, "getReadableDate - releaseDate=" + releaseDate);
+        //Log.v(TAG, "getReadableDate - releaseDate=" + releaseDate);
         if (releaseDate != null) {
             try {
                 SimpleDateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -258,11 +246,11 @@ public class MovieViewHolder {
         this.context = context;
     }
 
-    public MovieDb getMovie() {
+    public MovieDbInfo getMovie() {
         return movie;
     }
 
-    public void setMovie(MovieDb movie) {
+    public void setMovie(MovieDbInfo movie) {
         this.movie = movie;
     }
 

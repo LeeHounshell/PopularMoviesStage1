@@ -5,23 +5,20 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
-import java.util.List;
-
-import info.movito.themoviedbapi.model.MovieDb;
-
 
 public class MovieDetailsActivity
         extends ActionBarActivity {
     private static String TAG = "LEE: <" + MovieDetailsActivity.class.getSimpleName() + ">";
     private static MovieDetailsActivity detailActivity;
-    private static MovieDb movie;
+    private static MovieDbInfo movie;
 
     public static MovieDetailsActivity getDetailActivity() {
+        //Log.v(TAG, "getDetailActivity");
         return detailActivity;
     }
 
-    public static MovieDb getMovie() {
-        Log.v(TAG, "getMovie");
+    public static MovieDbInfo getMovie() {
+        //Log.v(TAG, "getMovie");
         return movie;
     }
 
@@ -32,11 +29,9 @@ public class MovieDetailsActivity
         detailActivity = this;
         setContentView(R.layout.activity_movie_details);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        List<MovieDb> movieList = MovieAdapter.getMovieList();
-        Integer position = getIntent().getIntExtra("cache_position", 0);
-        movie = movieList.get(position);
+        movie = (MovieDbInfo) getIntent().getParcelableExtra("movie");
         Log.d(TAG, "detail: movie=" + movie);
     }
 
