@@ -1,4 +1,4 @@
-package com.smartvariables.lee.popularmovies;
+package com.smartvariables.lee.popularmovies1;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;

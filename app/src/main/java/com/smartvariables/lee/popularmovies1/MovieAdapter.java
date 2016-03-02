@@ -1,7 +1,7 @@
 /*
  * code uses 'themoviedbapi' https://github.com/holgerbrandl/themoviedbapi/
  */
-package com.smartvariables.lee.popularmovies;
+package com.smartvariables.lee.popularmovies1;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,7 +1,7 @@
 /*
  * code patterned from: http://javatechig.com/android/download-and-display-image-in-android-gridview
  */
-package com.smartvariables.lee.popularmovies;
+package com.smartvariables.lee.popularmovies1;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;

@@ -1,4 +1,4 @@
-package com.smartvariables.lee.popularmovies;
+package com.smartvariables.lee.popularmovies1;
 
 import android.os.AsyncTask;
 import android.util.Log;

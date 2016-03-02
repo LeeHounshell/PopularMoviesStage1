@@ -7,7 +7,7 @@
     android:background="@color/blue"
     android:orientation="vertical"
     android:padding="9dp"
-    tools:context="com.smartvariables.lee.popularmovies.MovieDetailsActivityFragment">
+    tools:context="com.smartvariables.lee.popularmovies1.MovieDetailsActivityFragment">
 
     <GridLayout
         android:layout_width="match_parent"
